@@ -1,3 +1,4 @@
+// Assuming your form and results div have the same setup
 document
   .getElementById("searchForm")
   .addEventListener("submit", async function (e) {
@@ -7,7 +8,7 @@ document
     resultsDiv.innerHTML = ""; // Clear previous results
 
     try {
-      const response = await fetch("/search-recipes", {
+      const response = await fetch("/.netlify/functions/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -20,7 +21,6 @@ document
       }
 
       const data = await response.json();
-      console.log(data);
 
       if (data.results && data.results.length > 0) {
         data.results.forEach((recipe) => {
@@ -30,6 +30,7 @@ document
                     <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
                     <div class="recipe-info">
                         <h3 class="recipe-title">${recipe.title}</h3>
+                        <a href="https://spoonacular.com/recipes/${recipe.title}-${recipe.id}" target="_blank" class="recipe-link">View Recipe</a>
                     </div>
                 `;
           resultsDiv.appendChild(element);
